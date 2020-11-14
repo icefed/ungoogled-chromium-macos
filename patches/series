@@ -17,3 +17,5 @@ ungoogled-chromium/macos/suppress-newer-clang-warning-flags.patch
 ungoogled-chromium/macos/fix-dsymutil.patch
 ungoogled-chromium/macos/fix-clang-format-path.patch
 ungoogled-chromium/fix-node-path.patch
+icefed/omnibox_radius.patch
+icefed/tab_style_radius.patch

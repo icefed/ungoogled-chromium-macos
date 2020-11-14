@@ -1,0 +1,46 @@
+diff --git a/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm b/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
+index 4c789d30f3b4..47cdca6b96c9 100644
+--- a/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
++++ b/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.mm
+@@ -154,7 +154,7 @@ FullscreenToolbarStyle GetUserPreferredToolbarStyle(bool always_show) {
+ 
+   // Mac seems to reserve 1 DIP of the top inset as a resize handle.
+   constexpr int kResizeHandleHeight = 1;
+-  constexpr int kTabstripTopInset = 8;
++  constexpr int kTabstripTopInset = 0;
+   int top_inset = kTabstripTopInset;
+   if (EverHasVisibleBackgroundTabShapes()) {
+     top_inset =
+diff --git a/chrome/browser/ui/views/tabs/new_tab_button.cc b/chrome/browser/ui/views/tabs/new_tab_button.cc
+index 80709a25950a..23241db5ddcb 100644
+--- a/chrome/browser/ui/views/tabs/new_tab_button.cc
++++ b/chrome/browser/ui/views/tabs/new_tab_button.cc
+@@ -49,8 +49,13 @@ class NewTabButton::HighlightPathGenerator
+ 
+   // views::HighlightPathGenerator:
+   SkPath GetHighlightPath(const views::View* view) override {
+-    return static_cast<const NewTabButton*>(view)->GetBorderPath(
+-        view->GetContentsBounds().origin(), 1.0f, false);
++    // return static_cast<const NewTabButton*>(view)->GetBorderPath(
++    //     view->GetContentsBounds().origin(), 1.0f, false);
++    SkPath path;
++    const float radius = static_cast<const NewTabButton*>(view)->GetCornerRadius() / 4;
++    path.addRoundRect(gfx::RectToSkRect(view->GetContentsBounds()), radius,
++                     radius);
++    return path;
+   }
+ };
+ 
+diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
+index ee91707b46ab..fb8f5faa2e80 100644
+--- a/chrome/browser/ui/views/tabs/tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
+@@ -221,7 +221,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+ 
+   // Calculate the corner radii. Note that corner radius is based on original
+   // tab width (in DIP), not our new, scaled-and-aligned bounds.
+-  const float radius = GetTopCornerRadiusForWidth(tab_->width()) * scale;
++  const float radius = GetTopCornerRadiusForWidth(tab_->width()) * scale / 4;
+   float top_radius = radius;
+   float bottom_radius = radius;
+ 

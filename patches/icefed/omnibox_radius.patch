@@ -1,0 +1,52 @@
+diff --git a/ui/views/controls/highlight_path_generator.cc b/ui/views/controls/highlight_path_generator.cc
+index 01920dd775d1..d012bac56deb 100644
+--- a/ui/views/controls/highlight_path_generator.cc
++++ b/ui/views/controls/highlight_path_generator.cc
+@@ -86,7 +86,7 @@ CircleHighlightPathGenerator::CircleHigh
+ base::Optional<gfx::RRectF> CircleHighlightPathGenerator::GetRoundRect(
+     const gfx::RectF& rect) {
+   gfx::RectF bounds = rect;
+-  const float corner_radius = std::min(bounds.width(), bounds.height()) / 2.f;
++  const float corner_radius = std::min(bounds.width(), bounds.height()) / 2.f / 4;
+   bounds.ClampToCenteredSize(
+       gfx::SizeF(corner_radius * 2.f, corner_radius * 2.f));
+   return gfx::RRectF(bounds, corner_radius);
+diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
+index 41f33280da62..20cb7f384bb3 100644
+--- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
++++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
+@@ -552,7 +552,7 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+     highlight_bounds.Inset(0, 0, GetEndPaddingWithSeparator(), 0);
+   highlight_bounds = GetMirroredRect(highlight_bounds);
+ 
+-  const float corner_radius = highlight_bounds.height() / 2.f;
++  const float corner_radius = highlight_bounds.height() / 2.f / 4;
+   const SkRect rect = RectToSkRect(highlight_bounds);
+ 
+   return SkPath().addRoundRect(rect, corner_radius, corner_radius);
+diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+index 106221831663..4102c1cfa518 100644
+--- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
++++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
+@@ -343,7 +343,7 @@ std::unique_ptr<views::Background> LocationBarView::CreateRoundRectBackground(
+     SkColor stroke_color,
+     SkBlendMode blend_mode,
+     bool antialias) const {
+-  const int radius = GetBorderRadius();
++  const int radius = GetBorderRadius() / 4;
+   auto painter =
+       stroke_color == SK_ColorTRANSPARENT
+           ? views::Painter::CreateSolidRoundRectPainter(
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_tab_switch_button.cc b/chrome/browser/ui/views/omnibox/omnibox_tab_switch_button.cc
+index 9f62d8e72f9f..b539f1800bdf 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_tab_switch_button.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_tab_switch_button.cc
+@@ -58,7 +58,7 @@ OmniboxTabSwitchButton::OmniboxTabSwitchButton(
+   }
+   SetPreferredSize({full_text_width_, 32});
+   SetCornerRadius(views::LayoutProvider::Get()->GetCornerRadiusMetric(
+-      views::EMPHASIS_MAXIMUM, GetPreferredSize()));
++      views::EMPHASIS_MAXIMUM, GetPreferredSize()) / 4);
+   SetTooltipText(hint_);
+   SetElideBehavior(gfx::FADE_TAIL);
+ 
