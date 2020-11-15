@@ -2,15 +2,15 @@ diff --git a/ui/views/controls/highlight_path_generator.cc b/ui/views/controls/h
 index 01920dd775d1..d012bac56deb 100644
 --- a/ui/views/controls/highlight_path_generator.cc
 +++ b/ui/views/controls/highlight_path_generator.cc
-@@ -86,7 +86,7 @@ CircleHighlightPathGenerator::CircleHigh
- base::Optional<gfx::RRectF> CircleHighlightPathGenerator::GetRoundRect(
+@@ -105,7 +105,7 @@ void InstallCircleHighlightPathGenerator
+ base::Optional<gfx::RRectF> PillHighlightPathGenerator::GetRoundRect(
      const gfx::RectF& rect) {
    gfx::RectF bounds = rect;
 -  const float corner_radius = std::min(bounds.width(), bounds.height()) / 2.f;
 +  const float corner_radius = std::min(bounds.width(), bounds.height()) / 2.f / 4;
-   bounds.ClampToCenteredSize(
-       gfx::SizeF(corner_radius * 2.f, corner_radius * 2.f));
    return gfx::RRectF(bounds, corner_radius);
+ }
+ 
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 index 41f33280da62..20cb7f384bb3 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc

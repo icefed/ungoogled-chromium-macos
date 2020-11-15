@@ -19,3 +19,4 @@ ungoogled-chromium/macos/fix-clang-format-path.patch
 ungoogled-chromium/fix-node-path.patch
 icefed/omnibox_radius.patch
 icefed/tab_style_radius.patch
+icefed/reverse-replace-google-search-engine-with-nosearch.patch
